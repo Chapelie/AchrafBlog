@@ -1,12 +1,5 @@
-Voici une documentation complète et détaillée de ton backend pour aider la personne qui va intégrer le frontend. Elle inclut l'authentification, la gestion des articles (posts), des commentaires et des likes, ainsi que des exemples de requêtes API.  
 
----
-
-### 📌 **Documentation de l'API Backend**  
-📅 **Dernière mise à jour :** Février 2025  
 🛠 **Technologies utilisées :** Laravel, Repository Pattern, Sanctum pour l'authentification  
-
----
 
 ## 🚀 **1. Authentification**
 Le backend utilise Laravel Sanctum pour gérer l'authentification des utilisateurs. Toutes les routes nécessitant un utilisateur authentifié doivent inclure un `Authorization: Bearer <TOKEN>` dans les requêtes.
