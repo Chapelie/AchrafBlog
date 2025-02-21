@@ -1,66 +1,232 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Voici une documentation complète et détaillée de ton backend pour aider la personne qui va intégrer le frontend. Elle inclut l'authentification, la gestion des articles (posts), des commentaires et des likes, ainsi que des exemples de requêtes API.  
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+---
 
-## About Laravel
+### 📌 **Documentation de l'API Backend**  
+📅 **Dernière mise à jour :** Février 2025  
+🛠 **Technologies utilisées :** Laravel, Repository Pattern, Sanctum pour l'authentification  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 **1. Authentification**
+Le backend utilise Laravel Sanctum pour gérer l'authentification des utilisateurs. Toutes les routes nécessitant un utilisateur authentifié doivent inclure un `Authorization: Bearer <TOKEN>` dans les requêtes.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 📝 **Endpoints d'authentification**
+| Méthode | Endpoint | Description |
+|---------|---------|-------------|
+| `POST`  | `/api/register` | Inscription d'un nouvel utilisateur |
+| `POST`  | `/api/login` | Connexion et récupération du token |
+| `POST`  | `/api/logout` | Déconnexion et suppression du token |
 
-## Learning Laravel
+### 📌 **1.1 Inscription**
+**Requête :**  
+```http
+POST /api/register
+Content-Type: application/json
+```
+```json
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "password",
+  "password_confirmation": "password"
+}
+```
+**Réponse :**  
+```json
+{
+  "message": "Utilisateur créé avec succès",
+  "token": "eyJhbGciOiJIUzI1..."
+}
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 📌 **1.2 Connexion**
+**Requête :**  
+```http
+POST /api/login
+Content-Type: application/json
+```
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password"
+}
+```
+**Réponse :**  
+```json
+{
+  "message": "Connexion réussie",
+  "token": "eyJhbGciOiJIUzI1..."
+}
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 📌 **1.3 Déconnexion**
+**Requête :**  
+```http
+POST /api/logout
+Authorization: Bearer <TOKEN>
+```
+**Réponse :**  
+```json
+{
+  "message": "Déconnexion réussie"
+}
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 📖 **2. Gestion des Articles (Posts)**
+Les articles (posts) permettent de publier du contenu sur la plateforme.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 📝 **Endpoints des articles**
+| Méthode | Endpoint | Description |
+|---------|---------|-------------|
+| `GET`   | `/api/posts` | Récupérer tous les articles |
+| `POST`  | `/api/posts` | Créer un nouvel article |
+| `GET`   | `/api/posts/{id}` | Récupérer un article spécifique |
+| `PUT`   | `/api/posts/{id}` | Modifier un article |
+| `DELETE` | `/api/posts/{id}` | Supprimer un article |
 
-### Premium Partners
+### 📌 **2.1 Récupérer tous les articles**
+**Requête :**  
+```http
+GET /api/posts
+```
+**Réponse :**  
+```json
+[
+  {
+    "id": 1,
+    "title": "Premier article",
+    "content": "Ceci est le contenu de l'article...",
+    "author": "John Doe",
+    "likes_count": 5,
+    "comments_count": 3
+  }
+]
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 📌 **2.2 Créer un nouvel article**
+**Requête :**  
+```http
+POST /api/posts
+Authorization: Bearer <TOKEN>
+Content-Type: application/json
+```
+```json
+{
+  "title": "Mon nouvel article",
+  "content": "Contenu de l'article..."
+}
+```
+**Réponse :**  
+```json
+{
+  "message": "Article créé avec succès",
+  "post": { "id": 2, "title": "Mon nouvel article" }
+}
+```
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 💬 **3. Gestion des Commentaires**
+Les utilisateurs peuvent commenter un article.
 
-## Code of Conduct
+### 📝 **Endpoints des commentaires**
+| Méthode | Endpoint | Description |
+|---------|---------|-------------|
+| `GET`   | `/api/posts/{post}/comments` | Récupérer les commentaires d'un article |
+| `POST`  | `/api/posts/{post}/comments` | Ajouter un commentaire |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 📌 **3.1 Récupérer les commentaires d’un article**
+**Requête :**  
+```http
+GET /api/posts/1/comments
+```
+**Réponse :**  
+```json
+[
+  {
+    "id": 1,
+    "content": "Super article !",
+    "author": "John Doe",
+    "created_at": "2025-02-21"
+  }
+]
+```
 
-## Security Vulnerabilities
+### 📌 **3.2 Ajouter un commentaire**
+**Requête :**  
+```http
+POST /api/posts/1/comments
+Authorization: Bearer <TOKEN>
+Content-Type: application/json
+```
+```json
+{
+  "content": "Merci pour cet article très intéressant !"
+}
+```
+**Réponse :**  
+```json
+{
+  "message": "Commentaire ajouté avec succès",
+  "comment": { "id": 2, "content": "Merci pour cet article très intéressant !" }
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 👍 **4. Gestion des Likes**
+Les utilisateurs peuvent liker/déliker un article.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 📝 **Endpoints des likes**
+| Méthode | Endpoint | Description |
+|---------|---------|-------------|
+| `POST`  | `/api/posts/{post}/like` | Ajouter/supprimer un like |
+
+### 📌 **4.1 Liker / Disliker un article**
+**Requête :**  
+```http
+POST /api/posts/1/like
+Authorization: Bearer <TOKEN>
+```
+**Réponse (Like ajouté) :**  
+```json
+{
+  "message": "Like ajouté",
+  "likes_count": 6
+}
+```
+**Réponse (Like supprimé) :**  
+```json
+{
+  "message": "Like supprimé",
+  "likes_count": 5
+}
+```
+
+---
+
+## ⚙ **5. Middleware & Sécurité**
+Toutes les routes protégées nécessitent un utilisateur authentifié avec **Sanctum**.  
+**Exemple d'en-tête pour une requête protégée :**
+```http
+Authorization: Bearer <TOKEN>
+```
+
+---
+
+## 📌 **6. Déploiement & Configuration**
+**.env à configurer :**  
+```
+APP_NAME=BlogAPI
+APP_URL=http://127.0.0.1:8000
+
+DB_DATABASE=blog
+DB_USERNAME=root
+DB_PASSWORD=
+
+SANCTUM_STATEFUL_DOMAINS=localhost
+```
+
